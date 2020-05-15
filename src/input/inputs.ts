@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { deaden, scaleToMeleeAxes, scaleToGCTrigger } from "./melee";
 import { GamepadInfo } from "../types";
 import { stickValue, dPadState, buttonState, triggerValue } from "../gamepad";
@@ -6,7 +5,7 @@ import { Vec2D } from "../utils";
 
 export const controllerResetCountdowns = [0, 0, 0, 0];
 
-type Input = {
+interface Input {
   a: boolean;
   b: boolean;
   x: boolean;
@@ -29,7 +28,7 @@ type Input = {
   rawY: number;
   rawcsX: number;
   rawcsY: number;
-};
+}
 
 type InputList = [
   boolean,
@@ -52,106 +51,83 @@ type InputList = [
   number
 ];
 
-function inputData(
-  list: InputList = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-  ]
-): Input {
-  return {
-    a: list[0],
-    b: list[1],
-    x: list[2],
-    y: list[3],
-    z: list[4],
-    r: list[5],
-    l: list[6],
-    s: list[7],
-    du: list[8],
-    dr: list[9],
-    dd: list[10],
-    dl: list[11],
-    lsX: deaden(list[12]),
-    lsY: deaden(list[13]),
-    csX: deaden(list[14]),
-    csY: deaden(list[15]),
-    lA: list[16],
-    rA: list[17],
-    rawX: list[12],
-    rawY: list[13],
-    rawcsX: list[14],
-    rawcsY: list[15],
-  };
+class InputData implements Input {
+  a = false;
+  b = false;
+  x = false;
+  y = false;
+  z = false;
+  r = false;
+  l = false;
+  s = false;
+  du = false;
+  dr = false;
+  dd = false;
+  dl = false;
+  lsX = deaden(0);
+  lsY = deaden(0);
+  csX = deaden(0);
+  csY = deaden(0);
+  lA = 0;
+  rA = 0;
+  rawX = 0;
+  rawY = 0;
+  rawcsX = 0;
+  rawcsY = 0;
 }
 
-export const nullInput = () => new inputData();
+export const nullInput = () => new InputData();
 
 export const nullInputs = () => [
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
 ];
 const aiPlayer1 = [
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
 ];
 const aiPlayer2 = [
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
 ];
 const aiPlayer3 = [
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
 ];
 
 const aiPlayer4 = [
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
-  new inputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
+  new InputData(),
 ];
 
 const aiInputBank = [aiPlayer1, aiPlayer2, aiPlayer3, aiPlayer4];
@@ -325,14 +301,14 @@ function pollGamepadInputs(
   return input;
 }
 
-const customCenters = function () {
-  this.ls = new Vec2D(0, 0);
-  this.cs = new Vec2D(0, 0);
-  this.l = 0;
-  this.r = 0;
-};
+class CustomCenters {
+  ls = new Vec2D(0, 0);
+  cs = new Vec2D(0, 0);
+  l = 0;
+  r = 0;
+}
 
-const custcent = [new customCenters(), new customCenters(), new customCenters(), new customCenters()];
+const custcent = [new CustomCenters(), new CustomCenters(), new CustomCenters(), new CustomCenters()];
 
 function setCustomCenters(i: number, ls0: Vec2D, cs0: Vec2D, l0: number, r0: number): void {
   custcent[i].ls = ls0;
