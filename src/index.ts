@@ -59,7 +59,7 @@ let frameAdvance = [
   [true, true],
 ];
 
-window.addEventListener("gamepadconnected", function (e: any) {
+window.addEventListener("gamepadconnected", (e: any) => {
   console.log(
     "Gamepad connected at index %d: %s. %d buttons, %d axes.",
     e.gamepad.index,
@@ -72,7 +72,7 @@ if (navigator.getGamepads) console.log(navigator.getGamepads());
 
 const keys = {};
 
-function findPlayers() {
+const findPlayers = () => {
   var gps = navigator.getGamepads
     ? navigator.getGamepads()
     : navigator.webkitGetGamepads
@@ -137,7 +137,7 @@ function findPlayers() {
             }
             if (!alreadyIn) {
               if (ports < 4) {
-                changeGamemode(1);
+                gameMode = 1;
                 addPlayer(i, gpdInfo);
               }
             }
@@ -162,9 +162,9 @@ function findPlayers() {
       }
     }
   }
-}
+};
 
-function addPlayer(i: any, controllerInfo: any) {
+const addPlayer = (i: any, controllerInfo: any) => {
   if (controllerInfo === 99) {
     ports++;
     currentPlayers[ports - 1] = i;
@@ -176,7 +176,7 @@ function addPlayer(i: any, controllerInfo: any) {
     playerType[ports - 1] = 0;
     mType[ports - 1] = controllerInfo;
   }
-}
+};
 
 // 20:Startup
 // 14:Controller Menu
@@ -195,11 +195,7 @@ function addPlayer(i: any, controllerInfo: any) {
 // 1:Main Menu
 // 0:Title Screen
 
-function changeGamemode(newGamemode: number) {
-  gameMode = newGamemode;
-}
-
-function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any) {
+const interpretInputs = (i: any, active: any, playertype: any, inputBuffer: any) => {
   let tempBuffer = nullInputs();
 
   // keep updating Z and Start all the time, even when paused
@@ -325,9 +321,9 @@ function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any)
   }
 
   return tempBuffer;
-}
+};
 
-function gameTick(oldInputBuffers: any) {
+const gameTick = (oldInputBuffers: any) => {
   let input = [nullInputs(), nullInputs(), nullInputs(), nullInputs()];
   if (gameMode == 0 || gameMode == 20) {
     findPlayers();
@@ -347,11 +343,11 @@ function gameTick(oldInputBuffers: any) {
     }
   }
   setTimeout(gameTick, 16, input);
-}
+};
 
-export function start() {
+export const start = () => {
   console.log("starting...");
   let nullInputBuffers = [nullInputs(), nullInputs(), nullInputs(), nullInputs()];
   gameTick(nullInputBuffers);
-}
+};
 window.start = start;

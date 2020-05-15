@@ -78,7 +78,7 @@ interface DPad {
   right: boolean;
 }
 
-export function dPadState(gamepad: Gamepad, gamepadInfo: GamepadInfo): DPad {
+export const dPadState = (gamepad: Gamepad, gamepadInfo: GamepadInfo): DPad => {
   const info = gamepadInfo.dpad;
   let up = false;
   let down = false;
@@ -144,4 +144,4 @@ export function dPadState(gamepad: Gamepad, gamepadInfo: GamepadInfo): DPad {
     right = false;
   }
   return { up: up, down: down, left: left, right: right };
-}
+};

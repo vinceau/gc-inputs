@@ -1,7 +1,7 @@
 import { GamepadID, GamepadInfo, AllowedIDType } from "../types";
 import { gamepadInfoList } from "./variants";
 
-export function getGamepadNameAndInfo(identifier: string): null | [string, GamepadInfo] {
+export const getGamepadNameAndInfo = (identifier: string): null | [string, GamepadInfo] => {
   let name = null;
   let info = null;
   for (let i = 0; i < gamepadInfoList.length; i++) {
@@ -19,9 +19,9 @@ export function getGamepadNameAndInfo(identifier: string): null | [string, Gamep
   } else {
     return [name, info];
   }
-}
+};
 
-function checkAgainstGamepadID(identifier: string, gamepadID: GamepadID): boolean {
+const checkAgainstGamepadID = (identifier: string, gamepadID: GamepadID): boolean => {
   let matchedVP = false;
   if (gamepadID.vendor !== undefined && gamepadID.product !== undefined) {
     const [gpdVendor, gpdProduct] = [gamepadID.vendor, gamepadID.product];
@@ -41,9 +41,9 @@ function checkAgainstGamepadID(identifier: string, gamepadID: GamepadID): boolea
   }
 
   return matchedVP || matchedID;
-}
+};
 
-function removeZeroes(s: string): string {
+const removeZeroes = (s: string): string => {
   if (s.length < 2) {
     return s;
   } else {
@@ -54,15 +54,15 @@ function removeZeroes(s: string): string {
       return s;
     }
   }
-}
+};
 
-function match(s1: string, s2: string): boolean {
+const match = (s1: string, s2: string): boolean => {
   return removeZeroes(s1).toLowerCase() === removeZeroes(s2).toLowerCase();
-}
+};
 
 // hacky functions to get name, vendor and product by munging strings
 
-function getVendorAndProduct(identifier: string, allowedIDType?: AllowedIDType): null | [string, string] {
+const getVendorAndProduct = (identifier: string, allowedIDType?: AllowedIDType): null | [string, string] => {
   const l = identifier.length;
   let [vendor, product]: [string, string] = ["", ""];
   const allowFirefox = allowedIDType === undefined || allowedIDType === null || allowedIDType === "Firefox";
@@ -78,9 +78,9 @@ function getVendorAndProduct(identifier: string, allowedIDType?: AllowedIDType):
   } else {
     return [vendor, product];
   }
-}
+};
 
-function getID(identifier: string, allowedIDType?: AllowedIDType): string {
+const getID = (identifier: string, allowedIDType?: AllowedIDType): string => {
   const l = identifier.length;
   let id = identifier;
   const allowFirefox = allowedIDType === undefined || allowedIDType === null || allowedIDType === "Firefox";
@@ -91,4 +91,4 @@ function getID(identifier: string, allowedIDType?: AllowedIDType): string {
     id = identifier.substring(0, l - 29);
   }
   return id;
-}
+};

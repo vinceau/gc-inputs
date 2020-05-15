@@ -134,7 +134,7 @@ const aiInputBank = [aiPlayer1, aiPlayer2, aiPlayer3, aiPlayer4];
 
 // should be able to move out the "frameByFrame" aspect of the following function
 // it is only used to make z button mean "left trigger value = 0.35" + "A = true".
-export function pollInputs(
+export const pollInputs = (
   gameMode: number,
   frameByFrame: boolean,
   controllerInfo: "keyboard" | GamepadInfo,
@@ -142,7 +142,7 @@ export function pollInputs(
   controllerIndex: number,
   keys: { [key: number]: boolean },
   playertype: number
-): Input {
+): Input => {
   // input is the input for player i in the current frame
   let input = nullInput(); // initialise with default values
   if (playertype === 1 && gameMode === 3) {
@@ -156,15 +156,15 @@ export function pollInputs(
   console.log("got these inputs");
   console.log(input);
   return input;
-}
+};
 
-function pollGamepadInputs(
+const pollGamepadInputs = (
   gameMode: number,
   gamepadInfo: GamepadInfo,
   playerSlot: number,
   controllerIndex: number,
   frameByFrame: boolean
-): Input {
+): Input => {
   const input = nullInput();
 
   if (navigator.getGamepads === undefined) {
@@ -299,7 +299,7 @@ function pollGamepadInputs(
   input.du = dPadData.up;
 
   return input;
-}
+};
 
 class CustomCenters {
   ls = new Vec2D(0, 0);
@@ -310,9 +310,9 @@ class CustomCenters {
 
 const custcent = [new CustomCenters(), new CustomCenters(), new CustomCenters(), new CustomCenters()];
 
-function setCustomCenters(i: number, ls0: Vec2D, cs0: Vec2D, l0: number, r0: number): void {
+const setCustomCenters = (i: number, ls0: Vec2D, cs0: Vec2D, l0: number, r0: number): void => {
   custcent[i].ls = ls0;
   custcent[i].cs = cs0;
   custcent[i].l = l0;
   custcent[i].r = r0;
-}
+};
