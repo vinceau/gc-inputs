@@ -1,0 +1,55 @@
+{
+  "name": "gc-inputs",
+  "description": "GC Inputs",
+  "license": "MIT",
+  "version": "0.0.0",
+  "repository": "vinceau/gc-inputs",
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest --verbose",
+    "coverage": "yarn run test --coverage",
+    "postcoverage": "open-cli coverage/lcov-report/index.html",
+    "lint": "eslint \"src/**/*.ts\"",
+    "clean": "rimraf dist",
+    "prebuild": "yarn run clean",
+    "build": "rollup -c",
+    "watch": "rollup -cw",
+    "patch": "npm version patch && npm publish",
+    "minor": "npm version minor && npm publish",
+    "major": "npm version major && npm publish",
+    "prepublishOnly": "yarn run lint && yarn run test && yarn run build",
+    "postpublish": "git push origin master --follow-tags",
+    "docs": "yarn typedoc --excludePrivate --excludeNotExported",
+    "postdocs": "touch docs/.nojekyll"
+  },
+  "keywords": [
+    "gamecube",
+    "controller",
+    "gamepad"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/node": "^12.7.3",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.2.1",
+    "open-cli": "^6.0.1",
+    "rimraf": "^3.0.0",
+    "rollup": "^2.2.0",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "ts-jest": "^25.2.1",
+    "typedoc": "^0.17.3",
+    "typescript": "^3.6.2"
+  }
+}
