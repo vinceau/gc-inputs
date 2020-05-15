@@ -4,16 +4,16 @@ import { deepObjectMerge } from "./utils";
 import { GamepadInfo } from "./types";
 
 declare global {
-    interface Window {
-        mType: any;
-        start: any;
-    }
-    interface Navigator {
-        webkitGetGamepads: any;
-    }
+  interface Window {
+    mType: any;
+    start: any;
+  }
+  interface Navigator {
+    webkitGetGamepads: any;
+  }
 }
 
-const customGamepadInfo : Array<null | GamepadInfo> = [null, null, null, null];
+const customGamepadInfo: Array<null | GamepadInfo> = [null, null, null, null];
 const giveInputs: any = {};
 
 const player: any = [0, 0, 0, 0];
@@ -46,22 +46,44 @@ let gameMode = 20;
 // 1:Main Menu
 // 0:Title Screen
 
-let pause = [[true, true], [true, true], [true, true], [true, true]];
-let frameAdvance = [[true, true], [true, true], [true, true], [true, true]];
+let pause = [
+  [true, true],
+  [true, true],
+  [true, true],
+  [true, true],
+];
+let frameAdvance = [
+  [true, true],
+  [true, true],
+  [true, true],
+  [true, true],
+];
 
 window.addEventListener("gamepadconnected", function (e: any) {
-  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-    e.gamepad.index, e.gamepad.id,
-    e.gamepad.buttons.length, e.gamepad.axes.length);
+  console.log(
+    "Gamepad connected at index %d: %s. %d buttons, %d axes.",
+    e.gamepad.index,
+    e.gamepad.id,
+    e.gamepad.buttons.length,
+    e.gamepad.axes.length
+  );
 });
 if (navigator.getGamepads) console.log(navigator.getGamepads());
 
 const keys = {};
 
 function findPlayers() {
-  var gps = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+  var gps = navigator.getGamepads
+    ? navigator.getGamepads()
+    : navigator.webkitGetGamepads
+    ? navigator.webkitGetGamepads()
+    : [];
   for (var i = 0; i < gps.length; i++) {
-    var gamepad = navigator.getGamepads ? navigator.getGamepads()[i] : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads()[i] : null);
+    var gamepad = navigator.getGamepads
+      ? navigator.getGamepads()[i]
+      : navigator.webkitGetGamepads
+      ? navigator.webkitGetGamepads()[i]
+      : null;
     if (playerType[i] === 2) {
       var alreadyIn = false;
       for (var k = 0; k < ports; k++) {
@@ -77,7 +99,11 @@ function findPlayers() {
       continue;
     }
 
-    var gamepad = navigator.getGamepads ? navigator.getGamepads()[i] : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads()[i] : null);
+    var gamepad = navigator.getGamepads
+      ? navigator.getGamepads()[i]
+      : navigator.webkitGetGamepads
+      ? navigator.webkitGetGamepads()[i]
+      : null;
     if (typeof gamepad != "undefined" && gamepad != null) {
       var detected = false;
       var gpdName;
@@ -86,8 +112,7 @@ function findPlayers() {
         gpdName = "custom controls";
         gpdInfo = customGamepadInfo[i];
         detected = true;
-      }
-      else {
+      } else {
         const maybeNameAndInfo = getGamepadNameAndInfo(gamepad.id);
         if (maybeNameAndInfo === null) {
           console.log("Error in 'findPlayers': controller " + (i + 1) + " detected but not supported.");
@@ -175,7 +200,6 @@ function changeGamemode(newGamemode: number) {
 }
 
 function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any) {
-
   let tempBuffer = nullInputs();
 
   // keep updating Z and Start all the time, even when paused
@@ -187,9 +211,12 @@ function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any)
   tempBuffer[0] = pollInputs(gameMode, frameByFrame, mType[i], i, currentPlayers[i], keys, playertype);
 
   let pastOffset = 0;
-  if ((gameMode !== 3 && gameMode !== 5) || (playing && (pause[i][1] || !pause[i][0]))
-    || wasFrameByFrame
-    || (!playing && pause[i][0] && !pause[i][1])) {
+  if (
+    (gameMode !== 3 && gameMode !== 5) ||
+    (playing && (pause[i][1] || !pause[i][0])) ||
+    wasFrameByFrame ||
+    (!playing && pause[i][0] && !pause[i][1])
+  ) {
     pastOffset = 1;
   }
 
@@ -221,12 +248,12 @@ function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any)
   }
 
   if (mType !== null) {
-    if ((mType[i] === "keyboard" && (tempBuffer[0].z || tempBuffer[1].z))
-      || (mType[i] !== "keyboard" && (tempBuffer[0].z && !tempBuffer[1].z))
+    if (
+      (mType[i] === "keyboard" && (tempBuffer[0].z || tempBuffer[1].z)) ||
+      (mType[i] !== "keyboard" && tempBuffer[0].z && !tempBuffer[1].z)
     ) {
       frameAdvance[i][0] = true;
-    }
-    else {
+    } else {
       frameAdvance[i][0] = false;
     }
   }
@@ -235,17 +262,23 @@ function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any)
     frameByFrame = true;
   }
 
-  if (mType[i] !== null) { // gamepad controls
+  if (mType[i] !== null) {
+    // gamepad controls
 
-    if (!playing && (gameMode == 3 || gameMode == 5) &&
-      (tempBuffer[0].a && tempBuffer[0].l && tempBuffer[0].r && tempBuffer[0].s)
-      && (!(tempBuffer[1].a && tempBuffer[1].l && tempBuffer[1].r && tempBuffer[1].s))) {
+    if (
+      !playing &&
+      (gameMode == 3 || gameMode == 5) &&
+      tempBuffer[0].a &&
+      tempBuffer[0].l &&
+      tempBuffer[0].r &&
+      tempBuffer[0].s &&
+      !(tempBuffer[1].a && tempBuffer[1].l && tempBuffer[1].r && tempBuffer[1].s)
+    ) {
     }
 
-    if (tempBuffer[0].s || tempBuffer[0].du && gameMode == 5) {
+    if (tempBuffer[0].s || (tempBuffer[0].du && gameMode == 5)) {
       pause[i][0] = true;
-    }
-    else {
+    } else {
       pause[i][0] = false;
     }
 
@@ -256,12 +289,11 @@ function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any)
         // triggers code in input.js
         console.log("Controller #" + (i + 1) + " was reset!");
       }
-    }
-    else {
+    } else {
       controllerResetCountdowns[i] = 125;
     }
-  }
-  else { // AI
+  } else {
+    // AI
     tempBuffer[0].rawX = tempBuffer[0].lsX;
     tempBuffer[0].rawY = tempBuffer[0].lsY;
     tempBuffer[0].rawcsX = tempBuffer[0].csX;
@@ -278,13 +310,13 @@ function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any)
   }
   if (active) {
     if (tempBuffer[0].dl && !tempBuffer[1].dl) {
-      player[i].showLedgeGrabBox ^= (true as any);
+      player[i].showLedgeGrabBox ^= true as any;
     }
     if (tempBuffer[0].dd && !tempBuffer[1].dd) {
-      player[i].showECB ^= (true as any);
+      player[i].showECB ^= true as any;
     }
     if (tempBuffer[0].dr && !tempBuffer[1].dr) {
-      player[i].showHitbox ^= (true as any);
+      player[i].showHitbox ^= true as any;
     }
   }
 
@@ -293,7 +325,6 @@ function interpretInputs(i: any, active: any, playertype: any, inputBuffer: any)
   }
 
   return tempBuffer;
-
 }
 
 function gameTick(oldInputBuffers: any) {

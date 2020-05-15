@@ -1,17 +1,15 @@
 import { GamepadInfo } from "../types";
 import { Vec2D } from "../utils";
 
-export const buttonState = (gamepad : Gamepad, gamepadInfo : GamepadInfo, but : string): boolean => {
+export const buttonState = (gamepad: Gamepad, gamepadInfo: GamepadInfo, but: string): boolean => {
   const info = (gamepadInfo as any)[but];
   let state = false;
   if (info !== null && info !== undefined) {
     if (info.kind === "pressed" && info.index <= gamepad.buttons.length) {
       state = gamepad.buttons[info.index].pressed;
-    }
-    else if (info.kind === "value" && info.index <= gamepad.buttons.length) {
-      state = gamepad.buttons[info.index].value > info.threshold ;
-    }
-    else if (info.kind === "axis" && info.index <= gamepad.axes.length) {
+    } else if (info.kind === "value" && info.index <= gamepad.buttons.length) {
+      state = gamepad.buttons[info.index].value > info.threshold;
+    } else if (info.kind === "axis" && info.index <= gamepad.axes.length) {
       state = gamepad.axes[info.index] > info.threshold;
     }
   }
@@ -22,17 +20,15 @@ export const buttonState = (gamepad : Gamepad, gamepadInfo : GamepadInfo, but : 
   return state;
 };
 
-export const triggerValue = (gamepad : Gamepad, gamepadInfo : GamepadInfo, trig : string): number => {
+export const triggerValue = (gamepad: Gamepad, gamepadInfo: GamepadInfo, trig: string): number => {
   const info = (gamepadInfo as any)[trig];
   let val = 0;
   if (info !== null && info !== undefined) {
     if (info.kind === "axis" && info.index <= gamepad.axes.length) {
       val = gamepad.axes[info.index];
-    }
-    else if (info.kind === "value" && info.index <= gamepad.buttons.length ) {
+    } else if (info.kind === "value" && info.index <= gamepad.buttons.length) {
       val = gamepad.buttons[info.index].value;
-    }
-    else if (info.kind === "light" && info.index <= gamepad.buttons.length ) {
+    } else if (info.kind === "light" && info.index <= gamepad.buttons.length) {
       val = gamepad.buttons[info.index].pressed ? 0.35 : 0;
     }
   }
@@ -41,9 +37,9 @@ export const triggerValue = (gamepad : Gamepad, gamepadInfo : GamepadInfo, trig 
     val = 0;
   }
   return val;
-}
+};
 
-export const stickValue = (gamepad : Gamepad, gamepadInfo : GamepadInfo, stick : string) : Vec2D => {
+export const stickValue = (gamepad: Gamepad, gamepadInfo: GamepadInfo, stick: string): Vec2D => {
   const info = (gamepadInfo as any)[stick];
   let x = 0;
   let y = 0;
@@ -56,8 +52,7 @@ export const stickValue = (gamepad : Gamepad, gamepadInfo : GamepadInfo, stick :
       if (info.yIndex <= gamepad.axes.length) {
         y = gamepad.axes[info.yIndex];
       }
-    }
-    else {
+    } else {
       if (info.xIndex <= gamepad.buttons.length) {
         x = gamepad.buttons[info.xIndex].value;
       }
@@ -73,17 +68,17 @@ export const stickValue = (gamepad : Gamepad, gamepadInfo : GamepadInfo, stick :
   if (y === null || y === undefined) {
     y = 0;
   }
-  return new Vec2D(x,y);
-}
+  return new Vec2D(x, y);
+};
 
 interface DPad {
-    up: boolean;
-    down: boolean;
-    left: boolean;
-    right: boolean;
+  up: boolean;
+  down: boolean;
+  left: boolean;
+  right: boolean;
 }
 
-export function dPadState(gamepad : Gamepad, gamepadInfo : GamepadInfo) : DPad {
+export function dPadState(gamepad: Gamepad, gamepadInfo: GamepadInfo): DPad {
   const info = gamepadInfo.dpad;
   let up = false;
   let down = false;
@@ -105,34 +100,33 @@ export function dPadState(gamepad : Gamepad, gamepadInfo : GamepadInfo) : DPad {
       if (info.rightIndex <= l) {
         right = butts[info.rightIndex].pressed;
       }
-    }
-    else if (info.kind === "2axes") {
+    } else if (info.kind === "2axes") {
       if (info.xIndex <= gamepad.axes.length) {
         const x = gamepad.axes[info.xIndex];
-        if (  (info.xFlip && x < -0.3) || (!info.xFlip && x > 0.3 ) ) {
+        if ((info.xFlip && x < -0.3) || (!info.xFlip && x > 0.3)) {
           right = true;
         }
-        if (  (info.xFlip && x > 0.3) || (!info.xFlip && x < -0.3 ) ) {
+        if ((info.xFlip && x > 0.3) || (!info.xFlip && x < -0.3)) {
           left = true;
         }
       }
       if (info.yIndex <= gamepad.axes.length) {
         const y = gamepad.axes[info.yIndex];
-        if (  (info.yFlip && y < -0.3) || (!info.yFlip && y > 0.3 ) ) {
+        if ((info.yFlip && y < -0.3) || (!info.yFlip && y > 0.3)) {
           up = true;
         }
-        if (  (info.yFlip && y > 0.3) || (!info.yFlip && y < -0.3 ) ) {
+        if ((info.yFlip && y > 0.3) || (!info.yFlip && y < -0.3)) {
           down = true;
         }
       }
-    }
-    else if (info.kind === "axis") { // oh boy
+    } else if (info.kind === "axis") {
+      // oh boy
       if (info.index <= gamepad.axes.length) {
         const val = gamepad.axes[info.index];
-        left  = val >  0.3 && val < 1.1;
+        left = val > 0.3 && val < 1.1;
         right = val > -0.8 && val < 0;
-        down  = val > -0.2 && val < 0.5;
-        up    = val < -0.5 || (val > 0.9 && val < 1.1);
+        down = val > -0.2 && val < 0.5;
+        up = val < -0.5 || (val > 0.9 && val < 1.1);
       }
     }
   }
@@ -149,5 +143,5 @@ export function dPadState(gamepad : Gamepad, gamepadInfo : GamepadInfo) : DPad {
   if (right === null || right === undefined) {
     right = false;
   }
-  return { up : up, down : down, left : left, right : right };
+  return { up: up, down: down, left: left, right: right };
 }
