@@ -11,16 +11,10 @@ export default {
     },
     {
       file: pkg.module,
-      format: 'es',
+      format: 'umd',
     },
   ],
   external: [
-    "fs",
-    "stream",
-    "path",
-    "events",
-    "rxjs",
-    "rxjs/operators",
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
   ],

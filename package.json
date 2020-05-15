@@ -11,7 +11,7 @@
     "dist"
   ],
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
+  "module": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --verbose",
