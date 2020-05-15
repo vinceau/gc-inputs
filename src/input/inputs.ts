@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { deaden, scaleToMeleeAxes, scaleToGCTrigger } from "./meleeInputs";
+import { deaden, scaleToMeleeAxes, scaleToGCTrigger } from "./melee";
 import { GamepadInfo } from "../types";
 import { stickValue, dPadState, buttonState, triggerValue } from "../gamepad";
 import { Vec2D } from "../utils";

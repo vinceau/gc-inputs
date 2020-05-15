@@ -1,2 +1,2 @@
 export * from "./inputs";
-export * from "./meleeInputs";
+export * from "./melee";
