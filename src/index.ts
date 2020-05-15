@@ -1,6 +1,7 @@
-import { customGamepadInfo, getGamepadNameAndInfo, buttonState } from "./gamepad";
+import { getGamepadNameAndInfo, buttonState } from "./gamepad";
 import { nullInputs, pollInputs, controllerResetCountdowns, deaden, nullInput } from "./input";
 import { deepObjectMerge } from "./utils";
+import { GamepadInfo } from "./types";
 
 declare global {
     interface Window {
@@ -12,6 +13,7 @@ declare global {
     }
 }
 
+const customGamepadInfo : Array<null | GamepadInfo> = [null, null, null, null];
 const giveInputs: any = {};
 
 const player: any = [0, 0, 0, 0];
