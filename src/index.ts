@@ -49,10 +49,6 @@ let gameMode = 20;
 let pause = [[true, true], [true, true], [true, true], [true, true]];
 let frameAdvance = [[true, true], [true, true], [true, true], [true, true]];
 
-export function getCookie(cname: string) {
-  return "";
-}
-
 window.addEventListener("gamepadconnected", function (e: any) {
   console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
     e.gamepad.index, e.gamepad.id,
