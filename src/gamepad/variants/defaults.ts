@@ -1,5 +1,5 @@
-import { StickCardinals } from "../types";
-import { Vec2D } from "../utils";
+import { StickCardinals } from "../../types";
+import { Vec2D } from "../../utils";
 
 export const defaultCardinals   : StickCardinals = { center : new Vec2D(0,0), left : -1, right : 1, down : 1, up : -1 };
 export const invertedYCardinals : StickCardinals = { center : new Vec2D(0,0), left : -1, right : 1, down : -1, up : 1 };

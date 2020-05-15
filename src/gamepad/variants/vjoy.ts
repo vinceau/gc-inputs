@@ -1,4 +1,4 @@
-import {gamecubeCardinals} from "../defaults";
+import {gamecubeCardinals} from "./defaults";
 import { GamepadInfo } from "../../types";
 
 export const vjoy : GamepadInfo = 

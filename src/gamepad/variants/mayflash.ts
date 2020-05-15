@@ -1,5 +1,5 @@
 import { GamepadInfo } from "../../types";
-import { gamecubeCardinals } from "../defaults";
+import { gamecubeCardinals } from "./defaults";
 
 const mayflashIDs = [ { name : "Mayflash Wii U 4-way adapter", id : "Mayflash", vendor : "0079", product : "1843" } 
                     , { name : "Nexilux adapter", id : "NEXILUX", vendor : "0079", product : "1845" }
