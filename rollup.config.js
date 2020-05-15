@@ -12,6 +12,7 @@ export default {
     {
       file: pkg.module,
       format: 'umd',
+      name: 'gc',
     },
   ],
   external: [
