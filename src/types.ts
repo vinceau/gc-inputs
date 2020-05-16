@@ -56,6 +56,12 @@ export interface GamepadInfo {
   ids: GamepadID[];
 }
 
+export interface GamepadDetails {
+  name: string;
+  info: GamepadInfo | null;
+  gamepad: Gamepad;
+}
+
 export const nullGamepadInfo: GamepadInfo = {
   a: null,
   b: null,

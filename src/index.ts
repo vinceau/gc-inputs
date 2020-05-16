@@ -4,6 +4,7 @@
 // import { GamepadInfo } from "./types";
 
 import { InputPoller } from "./input/poller";
+import { mapGamepadToInput } from "./input";
 
 declare global {
   interface Window {
@@ -360,9 +361,11 @@ const poller = new InputPoller(2000);
 
 export const start = () => {
   console.log("Starting controller polling...");
-  poller.inputs$.subscribe((x) => {
-    console.log("polling:");
-    console.log(x);
+  poller.inputs$.subscribe((details) => {
+    details.forEach((gpDetails) => {
+      console.log(`input for port ${gpDetails.gamepad.index}:`);
+      console.log(mapGamepadToInput(gpDetails.gamepad, gpDetails.info));
+    });
   });
   // console.log("starting...");
   // let nullInputBuffers = [nullInputs(), nullInputs(), nullInputs(), nullInputs()];

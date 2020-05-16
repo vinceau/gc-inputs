@@ -1,8 +1,8 @@
 import { GamepadID, GamepadInfo, AllowedIDType } from "../types";
 import { gamepadInfoList } from "./variants";
 
-export const getGamepadNameAndInfo = (identifier: string): null | [string, GamepadInfo] => {
-  let name = null;
+export const getGamepadNameAndInfo = (identifier: string): { name: string; info: GamepadInfo | null } => {
+  let name = "unknown";
   let info = null;
   for (let i = 0; i < gamepadInfoList.length; i++) {
     for (let j = 0; j < gamepadInfoList[i].ids.length; j++) {
@@ -13,12 +13,7 @@ export const getGamepadNameAndInfo = (identifier: string): null | [string, Gamep
       }
     }
   }
-
-  if (name === null || info === null) {
-    return null;
-  } else {
-    return [name, info];
-  }
+  return { name, info };
 };
 
 const checkAgainstGamepadID = (identifier: string, gamepadID: GamepadID): boolean => {

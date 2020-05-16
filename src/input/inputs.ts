@@ -158,6 +158,137 @@ export const pollInputs = (
   return input;
 };
 
+export const mapGamepadToInput = (gamepad: Gamepad, gamepadInfo: GamepadInfo): Input => {
+  const playerSlot = 0;
+  const gameMode: number = 1;
+  const frameByFrame = false;
+
+  const input = nullInput();
+  // -------------------------------------------------------
+  // analog sticks
+
+  const lsVec = stickValue(gamepad, gamepadInfo, "ls");
+  const csVec = stickValue(gamepad, gamepadInfo, "cs");
+  const isGC = gamepadInfo.isGC;
+
+  let lsCardinals = null;
+  if (gamepadInfo.ls !== null) {
+    lsCardinals = gamepadInfo.ls.cardinals;
+  }
+  let csCardinals = null;
+  if (gamepadInfo.cs !== null) {
+    csCardinals = gamepadInfo.cs.cardinals;
+  }
+
+  const lsticks = scaleToMeleeAxes(
+    lsVec.x, // x-axis data
+    lsVec.y, // y-axis data
+    isGC,
+    lsCardinals,
+    custcent[playerSlot].ls.x, // x-axis "custom center" offset
+    custcent[playerSlot].ls.y // y-axis "custom center" offset
+  );
+  const csticks = scaleToMeleeAxes(
+    csVec.x,
+    csVec.y,
+    isGC,
+    csCardinals,
+    custcent[playerSlot].cs.x,
+    custcent[playerSlot].cs.y
+  );
+  input.lsX = deaden(lsticks[0]);
+  input.lsY = deaden(lsticks[1]);
+  input.csX = deaden(csticks[0]);
+  input.csY = deaden(csticks[1]);
+  input.rawX = lsticks[0];
+  input.rawY = lsticks[1];
+  input.rawcsX = csticks[0];
+  input.rawcsY = csticks[1];
+
+  // -------------------------------------------------------
+  // buttons
+
+  input.s = buttonState(gamepad, gamepadInfo, "s");
+  input.x = buttonState(gamepad, gamepadInfo, "x");
+  input.a = buttonState(gamepad, gamepadInfo, "a");
+  input.b = buttonState(gamepad, gamepadInfo, "b");
+  input.y = buttonState(gamepad, gamepadInfo, "y");
+  input.z = buttonState(gamepad, gamepadInfo, "z");
+
+  // -------------------------------------------------------
+  // triggers
+
+  input.l = buttonState(gamepad, gamepadInfo, "l");
+  input.r = buttonState(gamepad, gamepadInfo, "r");
+
+  if (gamepadInfo.lA !== null) {
+    const lA = gamepadInfo.lA;
+    if (lA.kind === "light") {
+      input.lA = triggerValue(gamepad, gamepadInfo, "lA");
+    } else {
+      input.lA = scaleToGCTrigger(
+        triggerValue(gamepad, gamepadInfo, "lA"), // raw trigger value
+        -lA.min - custcent[playerSlot].l, // offset
+        lA.max - lA.min // scaling
+      );
+    }
+  }
+
+  if (gamepadInfo.rA !== null) {
+    const rA = gamepadInfo.rA;
+    if (rA.kind === "light") {
+      input.rA = triggerValue(gamepad, gamepadInfo, "rA");
+    } else {
+      input.rA = scaleToGCTrigger(
+        triggerValue(gamepad, gamepadInfo, "rA"), // raw trigger value
+        -rA.min - custcent[playerSlot].r, // offset
+        rA.max - rA.min // scaling
+      );
+    }
+  }
+
+  if (controllerResetCountdowns[playerSlot] === 0) {
+    setCustomCenters(playerSlot, lsVec, csVec, input.lA, input.rA);
+  }
+
+  if (!frameByFrame && gameMode !== 4 && gameMode !== 14) {
+    // not in target builder or calibration screen
+    if (input.z) {
+      if (input.lA < 0.35) {
+        input.lA = 0.35;
+      }
+      input.a = true;
+    }
+  }
+
+  if (gameMode !== 14) {
+    if (input.l) {
+      input.lA = 1;
+    }
+    if (input.r) {
+      input.rA = 1;
+    }
+
+    if (input.lA > 0.95) {
+      input.l = true;
+    }
+    if (input.rA > 0.95) {
+      input.r = true;
+    }
+  }
+
+  // -------------------------------------------------------
+  // d-pad
+
+  const dPadData = dPadState(gamepad, gamepadInfo);
+  input.dl = dPadData.left;
+  input.dd = dPadData.down;
+  input.dr = dPadData.right;
+  input.du = dPadData.up;
+
+  return input;
+};
+
 const pollGamepadInputs = (
   gameMode: number,
   gamepadInfo: GamepadInfo,
