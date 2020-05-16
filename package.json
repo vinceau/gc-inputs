@@ -35,7 +35,9 @@
     "controller",
     "gamepad"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "rxjs": "^6.5.5"
+  },
   "devDependencies": {
     "@types/jest": "^25.1.4",
     "@types/node": "^12.7.3",
