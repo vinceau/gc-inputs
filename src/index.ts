@@ -13,7 +13,7 @@ declare global {
     stop: () => void;
   }
   interface Navigator {
-    webkitGetGamepads: any;
+    webkitGetGamepads: () => Gamepad[];
   }
 }
 
