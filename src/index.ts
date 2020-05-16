@@ -1,18 +1,22 @@
-import { getGamepadNameAndInfo, buttonState } from "./gamepad";
-import { nullInputs, pollInputs, controllerResetCountdowns, deaden, nullInput } from "./input";
-import { deepObjectMerge } from "./utils";
-import { GamepadInfo } from "./types";
+// import { getGamepadNameAndInfo, buttonState } from "./gamepad";
+// import { nullInputs, pollInputs, controllerResetCountdowns, deaden, nullInput } from "./input";
+// import { deepObjectMerge } from "./utils";
+// import { GamepadInfo } from "./types";
+
+import { InputPoller } from "./input/poller";
 
 declare global {
   interface Window {
     mType: any;
-    start: any;
+    start: () => void;
+    stop: () => void;
   }
   interface Navigator {
     webkitGetGamepads: any;
   }
 }
 
+/*
 const customGamepadInfo: Array<null | GamepadInfo> = [null, null, null, null];
 const giveInputs: any = {};
 
@@ -105,6 +109,8 @@ const findPlayers = () => {
       ? navigator.webkitGetGamepads()[i]
       : null;
     if (typeof gamepad != "undefined" && gamepad != null) {
+      console.log("gamepad:");
+      console.log(gamepad);
       var detected = false;
       var gpdName;
       var gpdInfo;
@@ -323,6 +329,7 @@ const interpretInputs = (i: any, active: any, playertype: any, inputBuffer: any)
   return tempBuffer;
 };
 
+let count = 0;
 const gameTick = (oldInputBuffers: any) => {
   let input = [nullInputs(), nullInputs(), nullInputs(), nullInputs()];
   if (gameMode == 0 || gameMode == 20) {
@@ -342,12 +349,30 @@ const gameTick = (oldInputBuffers: any) => {
       }
     }
   }
-  setTimeout(gameTick, 16, input);
+  if (count < 30) {
+    setTimeout(gameTick, 16, input);
+  }
+  count++;
 };
+*/
+
+const poller = new InputPoller(2000);
 
 export const start = () => {
-  console.log("starting...");
-  let nullInputBuffers = [nullInputs(), nullInputs(), nullInputs(), nullInputs()];
-  gameTick(nullInputBuffers);
+  console.log("Starting controller polling...");
+  poller.inputs$.subscribe((x) => {
+    console.log("polling:");
+    console.log(x);
+  });
+  // console.log("starting...");
+  // let nullInputBuffers = [nullInputs(), nullInputs(), nullInputs(), nullInputs()];
+  // gameTick(nullInputBuffers);
 };
+
+export const stop = () => {
+  console.log("Stopping controller polling...");
+  poller.stop();
+};
+
 window.start = start;
+window.stop = stop;
