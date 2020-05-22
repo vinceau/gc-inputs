@@ -3,6 +3,12 @@ import { takeUntil, map, filter } from "rxjs/operators";
 import { GamepadDetails } from "../types";
 import { getGamepadNameAndInfo } from "../gamepad";
 
+declare global {
+  interface Navigator {
+    webkitGetGamepads: () => Gamepad[];
+  }
+}
+
 export class InputPoller {
   private stopPolling$ = new Subject();
   public inputs$: Observable<GamepadDetails[]>;

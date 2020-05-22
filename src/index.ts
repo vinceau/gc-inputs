@@ -3,6 +3,9 @@
 // import { deepObjectMerge } from "./utils";
 // import { GamepadInfo } from "./types";
 
+export * from "./input";
+
+/*
 import { InputPoller } from "./input/poller";
 import { mapGamepadToInput } from "./input";
 
@@ -16,6 +19,7 @@ declare global {
     webkitGetGamepads: () => Gamepad[];
   }
 }
+*/
 
 /*
 const customGamepadInfo: Array<null | GamepadInfo> = [null, null, null, null];
@@ -355,7 +359,6 @@ const gameTick = (oldInputBuffers: any) => {
   }
   count++;
 };
-*/
 
 const poller = new InputPoller(2000);
 
@@ -379,3 +382,5 @@ export const stop = () => {
 
 window.start = start;
 window.stop = stop;
+
+*/
