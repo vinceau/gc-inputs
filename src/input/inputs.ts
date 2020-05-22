@@ -251,15 +251,15 @@ export const mapGamepadToInput = (gamepad: Gamepad, gamepadInfo: GamepadInfo): I
     setCustomCenters(playerSlot, lsVec, csVec, input.lA, input.rA);
   }
 
-  if (!frameByFrame /* && gameMode !== 4 && gameMode !== 14*/) {
-    // not in target builder or calibration screen
-    if (input.z) {
-      if (input.lA < 0.35) {
-        input.lA = 0.35;
-      }
-      input.a = true;
-    }
-  }
+  // if (!frameByFrame /* && gameMode !== 4 && gameMode !== 14*/) {
+  //   // not in target builder or calibration screen
+  //   if (input.z) {
+  //     if (input.lA < 0.35) {
+  //       input.lA = 0.35;
+  //     }
+  //     input.a = true;
+  //   }
+  // }
 
   /*
   if (gameMode !== 14) {
