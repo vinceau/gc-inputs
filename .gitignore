@@ -69,3 +69,7 @@ dist/
 *.old
 
 docs
+
+# Yalc
+.yalc
+yalc.lock
