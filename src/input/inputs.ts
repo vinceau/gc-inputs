@@ -5,7 +5,7 @@ import { Vec2D } from "../utils";
 
 export const controllerResetCountdowns = [0, 0, 0, 0];
 
-interface Input {
+export interface Input {
   a: boolean;
   b: boolean;
   x: boolean;
