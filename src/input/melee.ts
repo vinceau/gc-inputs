@@ -135,7 +135,8 @@ export const scaleToUnitAxes = (
   customCenterX: number,
   customCenterY: number
 ): NumberPair => {
-  let [[origx, origy], [lx, ly], [rx, ry], [dx, dy], [ux, uy]] = stickExtremePoints(stickCardinals);
+  const [sticks, [lx, ly], [rx, ry], [dx, dy], [ux, uy]] = stickExtremePoints(stickCardinals);
+  let [origx, origy] = sticks;
   origx += customCenterX;
   origy += customCenterY;
   const [xnew, ynew] = renormaliseAxisInput(
@@ -227,7 +228,7 @@ export const deaden = (x: number, dead: number = deadzoneConst): number => {
 };
 
 // scales -1 -- 1 TAS data to the data Melee uses for the simulation
-export const tasRescale = (x: number, y: number, isDeadzoned = false): NumberPair => {
+export const tasRescale = (x: number, y: number /*, isDeadzoned = false*/): NumberPair => {
   const xnew = ((x + 1) * 255) / 2;
   const ynew = ((y + 1) * 255) / 2;
   return meleeAxesRescale([xnew, ynew] /*, isDeadzoned */);

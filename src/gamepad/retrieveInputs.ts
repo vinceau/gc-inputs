@@ -44,7 +44,7 @@ export const stickValue = (gamepad: Gamepad, gamepadInfo: GamepadInfo, stick: st
   let x = 0;
   let y = 0;
   if (info !== null && info !== undefined) {
-    const isGC = gamepadInfo.isGC;
+    // const isGC = gamepadInfo.isGC;
     if (info.kind === "axes") {
       if (info.xIndex <= gamepad.axes.length) {
         x = gamepad.axes[info.xIndex];

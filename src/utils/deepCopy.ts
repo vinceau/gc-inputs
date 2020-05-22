@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // warning: this function is currently buggy and does not properly deep copy objects...
 // use `deepCopy` instead wherever possible
 export function deepObjectMerge(deep: boolean, target: any, object: any, exclusionList?: any) {

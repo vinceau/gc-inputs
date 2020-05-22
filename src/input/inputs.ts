@@ -160,7 +160,7 @@ export const pollInputs = (
 
 export const mapGamepadToInput = (gamepad: Gamepad, gamepadInfo: GamepadInfo): Input => {
   const playerSlot = 0;
-  const gameMode = 1;
+  // const gameMode = 1;
   const frameByFrame = false;
 
   const input = nullInput();
@@ -251,7 +251,7 @@ export const mapGamepadToInput = (gamepad: Gamepad, gamepadInfo: GamepadInfo): I
     setCustomCenters(playerSlot, lsVec, csVec, input.lA, input.rA);
   }
 
-  if (!frameByFrame && gameMode !== 4 && gameMode !== 14) {
+  if (!frameByFrame /* && gameMode !== 4 && gameMode !== 14*/) {
     // not in target builder or calibration screen
     if (input.z) {
       if (input.lA < 0.35) {
@@ -261,6 +261,7 @@ export const mapGamepadToInput = (gamepad: Gamepad, gamepadInfo: GamepadInfo): I
     }
   }
 
+  /*
   if (gameMode !== 14) {
     if (input.l) {
       input.lA = 1;
@@ -276,6 +277,7 @@ export const mapGamepadToInput = (gamepad: Gamepad, gamepadInfo: GamepadInfo): I
       input.r = true;
     }
   }
+  */
 
   // -------------------------------------------------------
   // d-pad
