@@ -13,7 +13,7 @@ declare global {
 export class InputPoller {
   private stopPolling$ = new Subject();
   public rawInputs$: Observable<GamepadDetails[]>;
-  public inputs$: Observable<Input[]>;
+  public allInputs$: Observable<Input[]>;
 
   public constructor(pollRateMs: number) {
     this.rawInputs$ = timer(0, pollRateMs).pipe(
@@ -41,11 +41,20 @@ export class InputPoller {
       takeUntil(this.stopPolling$)
     );
 
-    this.inputs$ = this.rawInputs$.pipe(
+    this.allInputs$ = this.rawInputs$.pipe(
       map((details) => {
         return details.map((gpDetails) => {
           return mapGamepadToInput(gpDetails.gamepad, gpDetails.info);
         });
+      })
+    );
+  }
+
+  public portInputs(port: number): Observable<Input> {
+    return this.allInputs$.pipe(
+      filter((details) => details.length >= port),
+      map((details) => {
+        return details[port - 1];
       })
     );
   }
