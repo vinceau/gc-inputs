@@ -5,9 +5,7 @@
 
 export * from "./input";
 
-/*
-import { InputPoller } from "./input/poller";
-import { mapGamepadToInput } from "./input";
+import { InputPoller } from "./input";
 
 declare global {
   interface Window {
@@ -15,11 +13,7 @@ declare global {
     start: () => void;
     stop: () => void;
   }
-  interface Navigator {
-    webkitGetGamepads: () => Gamepad[];
-  }
 }
-*/
 
 /*
 const customGamepadInfo: Array<null | GamepadInfo> = [null, null, null, null];
@@ -359,16 +353,16 @@ const gameTick = (oldInputBuffers: any) => {
   }
   count++;
 };
+*/
 
 const poller = new InputPoller(2000);
 
 export const start = () => {
   console.log("Starting controller polling...");
-  poller.inputs$.subscribe((details) => {
-    details.forEach((gpDetails) => {
-      console.log(`input for port ${gpDetails.gamepad.index}:`);
-      console.log(mapGamepadToInput(gpDetails.gamepad, gpDetails.info));
-    });
+  const portOne$ = poller.portInputs(1);
+  portOne$.subscribe((inputs) => {
+    console.log("input for port 0");
+    console.log(inputs);
   });
   // console.log("starting...");
   // let nullInputBuffers = [nullInputs(), nullInputs(), nullInputs(), nullInputs()];
@@ -382,5 +376,3 @@ export const stop = () => {
 
 window.start = start;
 window.stop = stop;
-
-*/
