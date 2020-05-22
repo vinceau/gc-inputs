@@ -160,7 +160,7 @@ export const pollInputs = (
 
 export const mapGamepadToInput = (gamepad: Gamepad, gamepadInfo: GamepadInfo): Input => {
   const playerSlot = 0;
-  const gameMode: number = 1;
+  const gameMode = 1;
   const frameByFrame = false;
 
   const input = nullInput();

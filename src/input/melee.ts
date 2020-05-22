@@ -191,7 +191,7 @@ export const meleeRound = (x: number): number => {
 const meleeAxesRescale = ([x, y]: NumberPair): NumberPair => {
   const xnew = axisRescale(x, meleeOrig);
   const ynew = axisRescale(y, meleeOrig);
-  let [xnew2, ynew2] = unitRetract([xnew, ynew]);
+  const [xnew2, ynew2] = unitRetract([xnew, ynew]);
   return [meleeRound(xnew2), meleeRound(ynew2)];
 };
 
@@ -204,8 +204,8 @@ export const scaleToMeleeAxes = (
   y: number,
   isGC: boolean,
   stickCardinals: null | StickCardinals,
-  customCenterX: number = 0,
-  customCenterY: number = 0
+  customCenterX = 0,
+  customCenterY = 0
 ): NumberPair => {
   let xnew = x;
   let ynew = y;
